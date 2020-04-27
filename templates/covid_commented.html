@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Akshay | WebApp</title>
+
+  <!-- This is to import Poppins font-->
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+  <!-- This is to import the CSS file. Iss file mei saare styles define karenge. 
+    Style means, webpage mei elements kaise dikhenge. For example, button ka shape, size, design, animations, etc. -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/covid_style.css') }}">
+
+</head>
+
+<body>
+
+  <!-- Comment start ==================================================================================
+
+        Template wali file ke andar ye wala part aa jayega. Flask mei template.html khulti hai hamesha. 
+        Uss file ke andar se hum apne web pages khol sakte hain.
+        
+        {% extends "template.html" %}    ======>>> template ke andar ye ayega ..   
+        {% block content %}
+        =======================================>>> yahan par hum apna content dal sakte hain
+        {% endblock %}
+
+  Comment End ==================================================================================-->
+
+
+
+  {% extends "template.html" %}
+  {% block content %}
+
+  {% endblock %}
+
+</body>
+
+</html>

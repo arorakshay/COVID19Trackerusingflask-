@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COVID'19 | WebApp</title>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/covid_style.css') }}">
+   <!-- 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+-->
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css'>
+
+
+
+   <!-- Charlist-->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+   <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+   <script src="css/ab.js"></script>
+   <!-- Chart.js-->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+   
+   <!-- Bootstraps Java Scipts Links -->
+   
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+   <!-- JQuery links  -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+   
+  
+</head>
+
+<body>
+  {% extends "template.html" %}
+  {% block content %}
+  
+
+
+
+
+  
+    
+  <h1>
+    <center>
+    <img src="{{ url_for('static', filename='images/icon-infected.png') }}">
+    COVID-19 Tracker {{country_name}}
+  </center>
+  </h1>
+
+
+<h5>
+  <center>
+  Last Updated at {{data['updated']}}.
+</center>
+</h5>
+  
+  <h3>
+    <center>
+    We will fight through this pandemic together &#128522;
+  </center>
+</h3>
+
+
+
+<!---
+<header class="header-section">
+  <div class="header-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 text-center">
+        <div class="site-meta">
+          <span class="blinking bar">Last Updated   mins ago.</span>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+  </header> -->
+  <div class="banner unselectable" style="text-align: center;  
+  width: 100% !important;">
+  
+  
+
+
+
+<h1 class="text">
+  Social Distancing
+
+</h1>
+<p>
+  Help prevent the spread of Coronavirus <i class="fas fa-virus"></i> by
+  maintaining at least 1m between you and others.
+</p>
+
+
+
+
+
+<div class="icons">
+  <span class="advice">
+    <i class="fas fa-handshake-alt-slash"></i>
+    <h3>Avoid physical contact</h3>
+  </span>
+  <span class="advice">
+    <i class="fas fa-hands-wash"></i>
+    <h3>Wash your hands</h3>
+  </span>
+  <span class="advice">
+    <i class="fas fa-head-side-mask"></i>
+    <h3>Use mask</h3>
+  </span>
+</div>
+
+<script>
+
+window.onload = function () {
+  document.querySelector(".text").classList.add("spaced");
+
+  const steps = document.querySelectorAll(".advice");
+  var count = 0;
+  setInterval(() => {
+    steps[count].style.display = "block";
+    steps[count].style.opacity = "1.0";
+  }, 3000);
+};
+</script>
+  <!-- 
+  <marquee behavior="scroll" direction="left">Be a hero, Take care of the elderly and stay home.
+                                              Keep your faces covered, maintain hygeine. </marquee>
+
+  <marquee behavior="scroll" direction="left">Keep your faces covered, maintain hygeine. </marquee>
+
+  <marquee behavior="scroll" direction="left">Follow advice from Ayush Ministry.</marquee>
+
+  <marquee behavior="scroll" direction="left">Download Arogya Setu app to track the spread.</marquee>
+
+  <marquee behavior="scroll" direction="left">Take care of the economically weaker sections.</marquee>
+
+  <marquee behavior="scroll" direction="left">Maintain Employer-employee relation.</marquee>
+
+  <marquee behavior="scroll" direction="left">Respect Corona Warriors. </marquee>-->
+
+
+  
+  <!-- We write id jb form p kuch java script ka kaam krvana ho-->
+  <style>
+    select {
+        width: 150px;
+        margin: 20px;
+    }
+    select:focus {
+        min-width: 150px;
+        width: auto;
+    }    
+</style>
+  <form action = "/covid19" method = "post">
+    <label>Select Country: </label>
+    <select  name="country" type = "text">
+      <option value="Select Country" selected required> {{country_name}}</option>
+      <option value="Albania">Albania</option>
+      <option value="Algeria">Algeria</option>
+      <option value="Andorra">Andorra</option>
+      <option value="Angola">Angola</option>
+      <option value="Argentina">Argentina</option>
+      <option value="Armenia">Armenia</option>
+      <option value="Australia">Australia</option>
+      <option value="Austria">Austria</option>
+      <option value="Azerbaijan">Azerbaijan</option>
+      <option value="Bahamas">Bahamas</option>
+      <option value="Bahrain">Bahrain</option>
+      <option value="Bangladesh">Bangladesh</option>
+      <option value="Barbados">Barbados</option>
+      <option value="Belarus">Belarus</option>
+      <option value="Belgium">Belgium</option>
+      <option value="Belize">Belize</option>
+      <option value="Benin">Benin</option>
+      <option value="Bhutan">Bhutan</option>
+      <option value="Bolivia">Bolivia</option>
+      <option value="Botswana">Botswana</option>
+      <option value="Brazil">Brazil</option>
+      <option value="Brunei">Brunei</option>
+      <option value="Bulgaria">Bulgaria</option>
+      <option value="Burkina Faso">Burkina Faso</option>
+      <option value="Burundi">Burundi</option>
+      <option value="Cambodia">Cambodia</option>
+      <option value="Cameroon">Cameroon</option>
+      <option value="Canada">Canada</option>
+      <option value="Cape Verde">Cape Verde</option>
+      <option value="Central African Republic">Central African Republic</option>
+      <option value="Chad">Chad</option>
+      <option value="Chile">Chile</option>
+      <option value="China">China</option>
+      <option value="Colombia">Colombia</option>
+      <option value="Congo">Congo</option>
+      <option value="Costa Rica">Costa Rica</option>
+      <option value="Croatia">Croatia</option>
+      <option value="Cuba">Cuba</option>
+      <option value="Cyprus">Cyprus</option>
+      <option value="Czech Republic">Czech Republic</option>
+      <option value="Denmark">Denmark</option>
+      <option value="Djibouti">Djibouti</option>
+      <option value="Dominica">Dominica</option>
+      <option value="Dominican Republic">Dominican Republic</option>
+      <option value="Ecuador">Ecuador</option>
+      <option value="Egypt">Egypt</option>
+      <option value="El Salvador">El Salvador</option>
+      <option value="Equatorial Guinea">Equatorial Guinea</option>
+      <option value="Eritrea">Eritrea</option>
+      <option value="Estonia">Estonia</option>
+      <option value="Ethiopia">Ethiopia</option>
+      <option value="Fiji">Fiji</option>
+      <option value="Finland">Finland</option>
+      <option value="France">France</option>
+      <option value="Gabon">Gabon</option>
+      <option value="Gambia">Gambia</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Germany">Germany</option>
+      <option value="Ghana">Ghana</option>
+      <option value="Greece">Greece</option>
+      <option value="Grenada">Grenada</option>
+      <option value="Guatemala">Guatemala</option>
+      <option value="Guinea">Guinea</option>
+      <option value="Guyana">Guyana</option>
+      <option value="Haiti">Haiti</option>
+      <option value="Honduras">Honduras</option>
+      <option value="Hungary">Hungary</option>
+      <option value="Iceland">Iceland</option>
+      <option value="Indonesia">Indonesia</option>
+      <option value="India">India</option>
+      <option value="Iran">Iran</option>
+      <option value="Iraq">Iraq</option>
+      <option value="Ireland">Ireland</option>
+      <option value="Israel">Israel</option>
+      <option value="Italy">Italy</option>
+      <option value="Jamaica">Jamaica</option>
+      <option value="Japan">Japan</option>
+      <option value="Jordan">Jordan</option>
+      <option value="Kazakhstan">Kazakhstan</option>
+      <option value="Kenya">Kenya</option>
+      <option value="Kuwait">Kuwait</option>
+      <option value="Kyrgyzstan">Kyrgyzstan</option>
+      <option value="Laos">Laos</option>
+      <option value="Latvia">Latvia</option>
+      <option value="Lebanon">Lebanon</option>
+      <option value="Liberia">Liberia</option>
+      <option value="Libya">Libya</option>
+      <option value="Liechtenstein">Liechtenstein</option>
+      <option value="Lithuania">Lithuania</option>
+      <option value="Luxembourg">Luxembourg</option>
+      <option value="Macedonia">Macedonia</option>
+      <option value="Madagascar">Madagascar</option>
+      <option value="Malaysia">Malaysia</option>
+      <option value="Malawi">Malawi</option>
+      <option value="Maldives">Maldives</option>
+      <option value="Mali">Mali</option>
+      <option value="Malta">Malta</option>
+      <option value="Mauritania">Mauritania</option>
+      <option value="Mauritius">Mauritius</option>
+      <option value="Mexico">Mexico</option>
+      <option value="Moldova">Moldova</option>
+      <option value="Monaco">Monaco</option>
+      <option value="Mongolia">Mongolia</option>
+      <option value="Morocco">Morocco</option>
+      <option value="Mozambique">Mozambique</option>
+      <option value="Nepal">Nepal</option>
+      <option value="Netherlands">Netherlands</option>
+      <option value="New Zealand">New Zealand</option>
+      <option value="Nicaragua">Nicaragua</option>
+      <option value="Niger">Niger</option>
+      <option value="Nigeria">Nigeria</option>
+      <option value="Norway">Norway</option>
+      <option value="Oman">Oman</option>
+      <option value="Pakistan">Pakistan</option>
+      <option value="Panama">Panama</option>
+      <option value="Papua New Guinea">Papua New Guinea</option>
+      <option value="Paraguay">Paraguay</option>
+      <option value="Peru">Peru</option>
+      <option value="Poland">Poland</option>
+      <option value="Portugal">Portugal</option>
+      <option value="Qatar">Qatar</option>
+      <option value="Romania">Romania</option>
+      <option value="Russia">Russia</option>
+      <option value="Rwanda">Rwanda</option>
+      <option value="Saudi Arabia">Saudi Arabia</option>
+      <option value="Senegal">Senegal</option>
+      <option value="Seychelles">Seychelles</option>
+      <option value="Sierra Leone">Sierra Leone</option>
+      <option value="Singapore">Singapore</option>
+      <option value="Slovakia">Slovakia</option>
+      <option value="Slovenia">Slovenia</option>
+      <option value="Somalia">Somalia</option>
+      <option value="South Africa">South Africa</option>
+      <option value="South Korea">South Korea</option>
+      <option value="Spain">Spain</option>
+      <option value="Sri Lanka">Sri Lanka</option>
+      <option value="Sudan">Sudan</option>
+      <option value="Suriname">Suriname</option>
+      <option value="Swaziland">Swaziland</option>
+      <option value="Sweden">Sweden</option>
+      <option value="Switzerland">Switzerland</option>
+      <option value="Syria">Syria</option>
+      <option value="Taiwan">Taiwan</option>
+      <option value="Tajikistan">Tajikistan</option>
+      <option value="Tanzania">Tanzania</option>
+      <option value="Thailand">Thailand</option>
+      <option value="Togo">Togo</option>
+      <option value="Tokelau">Tokelau</option>
+      <option value="Tonga">Tonga</option>
+      <option value="Tunisia">Tunisia</option>
+      <option value="Turkey">Turkey</option>
+      <option value="Uganda">Uganda</option>
+      <option value="United Kingdom">United Kingdom</option>
+      <option value="Ukraine">Ukraine</option>
+      <option value="UAE">UAE</option>
+      <option value="United States of America">United States of America</option>
+      <option value="Uzbekistan">Uzbekistan</option>
+      <option value="Venezuela">Venezuela</option>
+      <option value="Vietnam">Vietnam</option>
+      <option value="Yemen">Yemen</option>
+      <option value="Zambia">Zambia</option>
+      <option value="Zimbabwe">Zimbabwe</option>
+   </select>
+   <label><button type = "submit" style="height:23px;width:90px; color:#333;">Submit</button></label>
+
+  </form>  
+  
+
+
+  <div id="main-content">
+    <h2>
+      <center>
+        COVID-19 Status {{country_name}}
+    </center>
+  </h2>
+
+    <section id="site-dashboard" class="site-stats">
+      <div class="container">
+      <div class="row">
+      <div class="col-xs-12">
+      <div class="site-stats-count">
+        <ul>
+        <li class="bg-blue">
+        <img src="{{ url_for('static', filename='images/icon-infected.png') }}" alt="Total Status">
+        <strong>{{country_data['cases']}}</strong>
+        <span>Total Cases</span>
+        </li>
+        <li class="bg-green">
+        <img src="{{ url_for('static', filename='images/icon-inactive.png') }}" alt="Inactive Status">
+        <strong>{{country_data['recovered']}}</strong>
+        <span class="mob-hide">Cured / Discharged </span>
+        <span class="mob-show">Cured/ </span>
+        <span class="mob-show">Discharged </span>
+        </li>								
+        <li class="bg-red">
+        <img src="{{ url_for('static', filename='images/icon-death.png') }}" alt="Death Status">
+        <strong>{{country_data['deaths']}}</strong>
+        <span>Deaths</span>
+        </li>
+        <li class="bg-orange">
+        <img src="{{ url_for('static', filename='images/icon-active.png') }}" alt="Inactive Status">
+        <strong>{{country_data['critical']}}</strong>
+        <span>Critical</span>
+        </li>
+        <li class="bg-blue">
+          <img src="{{ url_for('static', filename='images/icon-infected.png') }}" alt="Active Status">
+          <strong>{{country_data['active']}}</strong>
+          <span>Active</span>
+          </li>
+          <li class="bg-green">
+          <img src="{{ url_for('static', filename='images/icon-inactive.png') }}" alt="Tests Status">
+          <strong>{{country_data['testsPerOneMillion']}}</strong>
+          <span>Testspermillion</span>
+          </li>	
+        </ul>
+        
+      </div><!--site-stats-count-->
+      </div><!--col-xs-->
+      </div><!--row-->
+      </div><!--container-->
+    </section>
+    </div>  
+
+  <div id="main-content">
+    <h2>
+      <center>
+        COVID-19 Status Global
+    </center>
+  </h2>
+
+    <section id="site-dashboard" class="site-stats">
+      <div class="container">
+      <div class="row">
+      <div class="col-xs-12">
+      <div class="site-stats-count">
+        <ul>
+
+        <li class="bg-blue">
+        <img src="{{ url_for('static', filename='images/icon-infected.png') }}" alt="Active Status">
+        <strong>{{data['cases']}}</strong>
+        <span>Active Cases</span>
+        </li>
+        <li class="bg-green">
+        <img src="{{ url_for('static', filename='images/icon-inactive.png') }}" alt="Inactive Status">
+        <strong>{{data['recovered']}}</strong>
+        <span class="mob-hide">Cured / Discharged </span>
+        <span class="mob-show">Cured/ </span>
+        <span class="mob-show">Discharged </span>
+        </li>								
+        <li class="bg-red">
+        <img src="{{ url_for('static', filename='images/icon-death.png') }}" alt="Death Status">
+        <strong>{{data['deaths']}}</strong>
+        <span>Deaths</span>
+        </li>
+        <li class="bg-orange">
+        <img src="{{ url_for('static', filename='images/icon-active.png') }}" alt="Inactive Status">
+        <strong>{{data['critical']}}</strong>
+        <span>Critical</span>
+        </li>
+        <li class="bg-blue">
+          <img src="{{ url_for('static', filename='images/icon-infected.png') }}" alt="Active Status">
+          <strong>{{data['active']}}</strong>
+          <span>Active</span>
+          </li>
+          <li class="bg-green">
+          <img src="{{ url_for('static', filename='images/icon-inactive.png') }}" alt="Tests Status">
+          <strong>{{data['testsPerOneMillion']}}</strong>
+          <span>Testspermillion</span>
+          </li>	
+        </ul>
+
+         <!--
+        <div class="status-update">
+        <h2 style="text-align: left;">COVID-19 Global <span>{{data['updated']}}</span></h2>
+        </div>-->
+        
+
+      </div><!--site-stats-count-->
+      </div><!--col-xs-->
+      </div><!--row-->
+      </div><!--container-->
+    </section>
+    </div>  
+
+
+ <h2>     
+    <center>
+      COVID-19 Spread of last month.
+  </center>
+</h2>
+
+
+
+<div class="col-md-12">
+  
+  <div class="myChart ct-perfect-fourth col-md-6">
+    <h3>COVID-19 Tracker Global</h3><canvas id="myChart" height="200px"></canvas>
+  </div>
+  
+  <h3>COVID-19 Tracker {{country_name}}</h3>
+  <div class="myChart1 ct-perfect-fourth col-md-6">
+    <canvas id="myChart1" height="200px"></canvas>
+  </div>
+</div>
+
+  
+
+<script>
+var ctx = "myChart";
+var myChart = new Chart(ctx, {
+  type: 'line',
+  options: {
+    title: {
+      display: true,
+      text: 'Precision-Recall Curve'
+    },
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: 'rgba(69, 82, 94, 0.9)',
+      mode: 'index'
+      // position: 'nearest',  
+    }
+  },
+  options : {
+      scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Count'
+          }
+        }],
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Dates'
+          }
+        }]
+      }
+    },
+  data: {
+    labels: [{% for item in labels %}
+             "{{item}}",
+            {% endfor %}],
+    datasets: [{
+      label: 'Total Cases',
+      data: [{% for item in values %}
+                {{item}},
+              {% endfor %}],
+      borderColor: '#1c369f',
+      backgroundColor: 'rgba(0, 0, 255, .3)',
+      pointBorderColor: "#fff",
+      pointBackgroundColor: "#1c369f",
+      pointRadius: .5,
+      pointHitRadius: 10
+    }, {
+      label: 'Total Deaths',
+      data: [{% for item in final_count_deaths %}
+                {{item}},
+              {% endfor %}],
+      borderColor: '#800000',
+      backgroundColor: 'rgba(128, 0, 0, .3)',
+      pointBorderColor: "#fff",
+      pointBackgroundColor: "#800000",
+      pointRadius: .5,
+      pointHitRadius: 10
+    },
+     {
+    label: 'Total Recovered',
+      data: [{% for item in final_count_recovered %}
+                {{item}},
+              {% endfor %}],
+      borderColor: '#228B22',
+      backgroundColor: 'rgba(34, 139, 34, .3)',
+      pointBorderColor: "#fff",
+      pointBackgroundColor: "#228B22",
+      pointRadius: .5,
+      pointHitRadius: 10
+    }
+  ]
+  }
+  
+});
+window.onload = function() {
+		var ctx = document.getElementById("myChart").getContext("2d");
+		
+}
+
+
+var ctx1= "myChart1";
+var myChart1 = new Chart(ctx1, {
+  type: 'bar',
+  options: {
+    title: {
+      display: true,
+      text: 'Precision-Recall Curve'
+    },
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: 'rgba(69, 82, 94, 0.9)',
+      mode: 'index'
+      // position: 'nearest',  
+    }
+  },
+  options : {
+      scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Count'
+          }
+        }],
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Dates'
+          }
+        }]
+      }
+    },
+  data: {
+    labels: [{% for item in final_date_all_country %}
+             "{{item}}",
+            {% endfor %}],
+    datasets: [{
+      label: 'Total Cases',
+      data: [{% for item in final_count_all_country %}
+                {{item}},
+              {% endfor %}],
+      borderColor: '#1c369f',
+      backgroundColor: 'rgba(0, 0, 255, .3)',
+      pointBorderColor: "#fff",
+      pointBackgroundColor: "#1c369f",
+      pointRadius: .5,
+      pointHitRadius: 10
+    },
+    {
+      label: 'Total Deaths',
+      data: [{% for item in final_count_deaths_country %}
+                {{item}},
+              {% endfor %}],
+      borderColor: '#800000',
+      backgroundColor: 'rgba(128, 0, 0, .3)',
+      pointBorderColor: "#fff",
+      pointBackgroundColor: "#800000",
+      pointRadius: .5,
+      pointHitRadius: 10
+    },
+     {
+    label: 'Total Recovered',
+      data: [{% for item in final_count_recovered_country %}
+                {{item}},
+              {% endfor %}],
+      borderColor: '#228B22',
+      backgroundColor: 'rgba(34, 139, 34, .3)',
+      pointBorderColor: "#fff",
+      pointBackgroundColor: "#228B22",
+      pointRadius: .5,
+      pointHitRadius: 10
+    }
+  ]
+  }
+  
+});
+window.onload = function() {
+		var ctx1 = document.getElementById("myChart1").getContext("2d");
+		
+}
+
+
+
+
+</script>
+
+
+
+
+  
+      <br><br>
+      <p style="text-align: center;"> Developed by 
+        <a href="https://www.linkedin.com/in/akshay-arora-0822/" target="_blank"><strong>Akshay Arora</strong></a>
+      </p>
+      <p style="text-align: center;"> Information Source: 
+        <a href="https://www.worldometers.info/" target="_blank"><strong>Worldometer</strong></a>
+      </p>
+
+  {% endblock %}
+</body>
+</html>
